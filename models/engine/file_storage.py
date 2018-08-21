@@ -91,7 +91,7 @@ class FileStorage:
         if id is None or cls is None:
             return (None)
 
-        return (self.all(cls)[id])
+        return (self.all(cls)[cls + "." + id])
 
     def count(self, cls=None):
         '''

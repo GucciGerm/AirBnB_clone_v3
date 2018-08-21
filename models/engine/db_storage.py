@@ -38,13 +38,7 @@ class DBStorage:
         '''
         db_dict = {}
 
-        if cls != "":
-            objs = self.__session.query(models.classes[cls]).all()
-            for obj in objs:
-                key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                db_dict[key] = obj
-            return db_dict
-        else:
+        if cls == "" or cls is None:
             for k, v in models.classes.items():
                 if k != "BaseModel":
                     objs = self.__session.query(v).all()
@@ -53,6 +47,12 @@ class DBStorage:
                             key = "{}.{}".format(obj.__class__.__name__,
                                                  obj.id)
                             db_dict[key] = obj
+            return db_dict
+        else:
+            objs = self.__session.query(models.classes[cls]).all()
+            for obj in objs:
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                db_dict[key] = obj
             return db_dict
 
     def new(self, obj):
@@ -101,7 +101,7 @@ class DBStorage:
         if id is None or cls is None:
             return (None)
 
-        return (self.all(cls)[id])
+        return (self.all(cls)[cls + "." + id])
 
     def count(self, cls=None):
         '''
