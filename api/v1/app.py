@@ -15,10 +15,12 @@ if __name__ == "__main__":
 
     @app.teardown_appcontext
     def flask_teardown(error):
+        """Teardown after flask app runs"""
         storage.close()
 
     @app.errorhandler(404)
     def page_not_found(exception):
+        """404 page handler"""
         d = {"error": "Not found"}
         return (jsonify(d))
 

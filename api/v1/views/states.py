@@ -11,11 +11,13 @@ from werkzeug.exceptions import BadRequest
 
 @app_views.route("/states", methods=["GET"], strict_slashes=False)
 def states_get_all():
+    """Return all state dictionaries"""
     return (jsonify([x.to_dict() for x in storage.all("State").values()]))
 
 
 @app_views.route("/states/<state_id>", methods=["GET"], strict_slashes=False)
 def states_get(state_id):
+    """Return attribute dictionary for a particular state"""
     get_states = storage.get("State", state_id)
     if get_states is None:
         abort(404)
@@ -25,6 +27,7 @@ def states_get(state_id):
 @app_views.route("/states/<state_id>", methods=["DELETE"],
                  strict_slashes=False)
 def states_delete(state_id):
+    """Delete a state from storage"""
     states = storage.get("State", state_id)
     if states is None:
         abort(404)
@@ -35,6 +38,7 @@ def states_delete(state_id):
 
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
 def states_post():
+    """Add a state to storage with given dictionary"""
     try:
         obj = request.get_json()
 
@@ -51,6 +55,7 @@ def states_post():
 
 @app_views.route("/states/<state_id>", methods=["PUT"], strict_slashes=False)
 def states_put(state_id):
+    """Update a state in storage"""
     try:
         put_state = storage.get("State", state_id)
         obj = request.get_json()
