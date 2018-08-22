@@ -43,6 +43,14 @@ Commands | Description | Usage
 **all** | Prints all string representation of all instances based or not on the class name | **all** or **all** \<class_name class_id\>
 **update** | Updates an instance based on the class name and id by adding or updating attribute | **update** \<class_name class_id key value\>
 
+
+## Methods
+**get** | get is a method to retrieve one object
+**count** | count is a method to count the number of objects in storage
+**delete** | delete is a method that deletes a State object
+**post** | post is a method that creates a State
+**Put** | put is a method that updates a State object
+
 ## Resources
 * Fabric: [Usage1](https://www.digitalocean.com/community/tutorials/how-to-use-fabric-to-automate-administration-tasks-and-deployments), [Usage2](https://www.pythonforbeginners.com/systems-programming/how-to-use-fabric-in-python), [Documenation](http://www.fabfile.org/)
 * Nginx: [Beginner's Config file](http://nginx.org/en/docs/beginners_guide.html), [Root vs Alias](https://blog.heitorsilva.com/en/nginx/diferenca-entre-root-e-alias-do-nginx/), 
