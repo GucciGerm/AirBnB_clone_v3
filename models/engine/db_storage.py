@@ -100,8 +100,10 @@ class DBStorage:
 
         if id is None or cls is None:
             return (None)
-
-        return (self.all(cls)[cls + "." + id])
+        try:
+            return (self.all(cls)[cls + "." + id])
+        except KeyError:
+            return (None)
 
     def count(self, cls=None):
         '''
