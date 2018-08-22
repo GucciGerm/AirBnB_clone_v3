@@ -10,6 +10,7 @@ if __name__ == "__main__":
     import flask
 
     app = flask.Flask(__name__)
+    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
     app.register_blueprint(app_views, url_prefix="/api/v1")
 
     @app.teardown_appcontext
