@@ -20,7 +20,7 @@ def flask_teardown(error):
 def page_not_found(exception):
     """404 page handler"""
     d = {"error": "Not found"}
-    return (jsonify(d))
+    return (jsonify(d)), 404
 
 if __name__ == "__main__":
     app.run(threaded=True, host="0.0.0.0", port=5000)
