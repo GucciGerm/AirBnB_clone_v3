@@ -25,6 +25,7 @@ class BaseModel:
         '''
             Initialize public instance attributes.
         '''
+        print("kwargs", kwargs)
         if (len(kwargs) == 0):
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
