@@ -8,11 +8,13 @@ from models import storage
 from api.v1.views import app_views
 from flask import jsonify, Flask
 from os import getenv
+from flask_cors import CORS
 
 
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views, url_prefix="/api/v1")
+cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
