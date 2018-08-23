@@ -67,7 +67,7 @@ def states_put(state_id):
                 continue
             else:
                 setattr(put_state, key, value)
-            put_state.save()
+        put_state.save()
         return jsonify(put_state.to_dict()), 200
 
     except BadRequest:
