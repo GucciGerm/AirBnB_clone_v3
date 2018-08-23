@@ -6,6 +6,8 @@ from os import getenv
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
+from hashlib import md5
+from os import getenv
 
 
 class User(BaseModel, Base):
