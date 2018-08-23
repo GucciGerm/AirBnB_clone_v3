@@ -82,7 +82,8 @@ def reviews_put(review_id):
         obj = request.get_json()
 
         for key, value in obj.items():
-            if key in ["id", "created_at", "updated_at", "place_id", "user_id"]:
+            if key in ["id", "created_at", "updated_at",
+                       "place_id", "user_id"]:
                 continue
             else:
                 setattr(put_review, key, value)
