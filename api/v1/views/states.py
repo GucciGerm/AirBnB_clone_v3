@@ -50,7 +50,7 @@ def states_post():
         return jsonify(obj.to_dict()), 201
 
     except BadRequest:
-        return "Not a JSON", 400
+        return "Not a JSON", 500
 
 
 @app_views.route("/states/<state_id>", methods=["PUT"], strict_slashes=False)
