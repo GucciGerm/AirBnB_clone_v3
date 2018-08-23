@@ -54,7 +54,8 @@ def amenities_post():
         return "Not a JSON", 400
 
 
-@app_views.route("/amenities/<amenity_id>", methods=["PUT"], strict_slashes=False)
+@app_views.route("/amenities/<amenity_id>", methods=["PUT"],
+                 strict_slashes=False)
 def amenities_put(amenity_id):
     """Update a amenity in storage"""
     try:
