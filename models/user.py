@@ -29,7 +29,3 @@ class User(BaseModel, Base):
         password = ""
         first_name = ""
         last_name = ""
-
-        @password.setter
-        def set_password(self, password=None):
-            self.password = md5(password).hexdigest()
