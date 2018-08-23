@@ -9,6 +9,7 @@ from models.base_model import BaseModel, Base
 from hashlib import md5
 from os import getenv
 
+
 class User(BaseModel, Base):
     '''
         Definition of the User class
