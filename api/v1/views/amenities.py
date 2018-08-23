@@ -15,7 +15,8 @@ def amenities_get_all():
     return (jsonify([x.to_dict() for x in storage.all("Amenity").values()]))
 
 
-@app_views.route("/amenities/<amenity_id>", methods=["GET"], strict_slashes=False)
+@app_views.route("/amenities/<amenity_id>",
+                 methods=["GET"], strict_slashes=False)
 def amenities_get(amenity_id):
     """Return attribute dictionary for a particular amenity"""
     get_amenities = storage.get("Amenity", amenity_id)
