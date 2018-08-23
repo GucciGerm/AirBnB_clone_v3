@@ -8,7 +8,8 @@ from datetime import datetime
 import models
 from sqlalchemy import Column, String, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-
+from sys import _getframe
+from hashlib import md5
 
 Base = declarative_base()
 
@@ -41,6 +42,8 @@ class BaseModel:
             else:
                 self.updated_at = datetime.now()
             for key, val in kwargs.items():
+                if key == "password":
+                    val = md5(val.encode()).hexdigest()
                 if "__class__" not in key:
                     setattr(self, key, val)
             if not self.id:
@@ -78,6 +81,9 @@ class BaseModel:
         cp_dct['created_at'] = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
         if hasattr(self, "_sa_instance_state"):
             del cp_dct["_sa_instance_state"]
+        if hasattr(self, "password") and \
+           _getframe(1).f_code.co_name != "save":
+            del cp_dct["password"]
         return (cp_dct)
 
     def delete(self):
