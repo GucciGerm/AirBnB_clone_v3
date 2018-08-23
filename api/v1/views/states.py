@@ -6,7 +6,7 @@ from api.v1.views import app_views
 from models import storage, State
 from flask import jsonify, abort, request
 from json import dumps
-#from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest
 
 
 @app_views.route("/states", methods=["GET"], strict_slashes=False)
@@ -49,7 +49,7 @@ def states_post():
         obj.save()
         return jsonify(obj.to_dict()), 201
 
-    except Exception:
+    except BadRequest:
         return "Not a JSON", 400
 
 
@@ -58,9 +58,11 @@ def states_put(state_id):
     """Update a state in storage"""
     try:
         put_state = storage.get("State", state_id)
-        obj = request.get_json()
+        print(put_state)
         if put_state is None:
             abort(404)
+
+        obj = request.get_json()
 
         for key, value in obj.items():
             if key == "id" or key == "created_at" or key == "updated_at":
@@ -70,5 +72,5 @@ def states_put(state_id):
         put_state.save()
         return (jsonify(put_state.to_dict())), 200
 
-    except Exception:
+    except BadRequest:
         return "Not a JSON", 400
