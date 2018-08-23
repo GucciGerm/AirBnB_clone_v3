@@ -32,7 +32,6 @@ def states_delete(state_id):
     if states is None:
         abort(404)
     storage.delete(states)
-    storage.save()
     return (jsonify({}))
 
 
@@ -50,7 +49,7 @@ def states_post():
         return jsonify(obj.to_dict()), 201
 
     except BadRequest:
-        return "Not a JSON", 500
+        return "Not a JSON", 400
 
 
 @app_views.route("/states/<state_id>", methods=["PUT"], strict_slashes=False)
@@ -68,7 +67,7 @@ def states_put(state_id):
                 continue
             else:
                 setattr(put_state, key, value)
-        put_state.save()
+            obj.save()
         return jsonify(put_state.to_dict()), 200
 
     except BadRequest:
