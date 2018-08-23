@@ -58,7 +58,6 @@ def states_put(state_id):
     """Update a state in storage"""
     try:
         put_state = storage.get("State", state_id)
-        print(put_state)
         if put_state is None:
             abort(404)
 
