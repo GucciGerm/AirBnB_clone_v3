@@ -45,7 +45,11 @@ def states_post():
         if "name" not in obj:
             return "Missing name", 400
 
-        obj = State(**obj)
+        cleandict = {}
+        for key in obj:
+            if hasattr(State, key):
+                cleandict[key] = obj[key]
+        obj = State(**cleandict)
         obj.save()
         return jsonify(obj.to_dict()), 201
 
@@ -64,7 +68,8 @@ def states_put(state_id):
         obj = request.get_json()
 
         for key, value in obj.items():
-            if key == "id" or key == "created_at" or key == "updated_at":
+            if key == "id" or key == "created_at"\
+               or key == "updated_at" or not hasattr(put_state, key):
                 continue
             else:
                 setattr(put_state, key, value)
