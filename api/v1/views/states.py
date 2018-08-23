@@ -68,8 +68,7 @@ def states_put(state_id):
         obj = request.get_json()
 
         for key, value in obj.items():
-            if key == "id" or key == "created_at"\
-               or key == "updated_at" or not hasattr(put_state, key):
+            if key == "id" or key == "created_at" or key == "updated_at":
                 continue
             else:
                 setattr(put_state, key, value)
