@@ -24,5 +24,5 @@ def page_not_found(exception):
     return (jsonify(d)), 404
 
 if __name__ == "__main__":
-    app.run(threaded=True, host=getenv("HBNB_API_HOST", default="0.0.0.0"),
-            port=getenv("HBNB_API_PORT", default=5000))
+    app.run(host=getenv("HBNB_API_HOST", default="0.0.0.0"),
+            port=int(getenv("HBNB_API_PORT", default=5000)), threaded=True)
