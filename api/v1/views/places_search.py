@@ -9,7 +9,7 @@ from json import dumps
 from werkzeug.exceptions import BadRequest
 
 
-@app_views.route("/places_search", methods=["GET"], strict_slashes=False)
+@app_views.route("/places_search", methods=["POST"], strict_slashes=False)
 def places_search():
     """Return all palces matching search criteria"""
     criteria = request.get_json()
