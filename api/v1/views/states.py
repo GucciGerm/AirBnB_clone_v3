@@ -40,7 +40,7 @@ def states_delete(state_id):
 def states_post():
     """Add a state to storage with given dictionary"""
     obj = request.get_json(silent=True)
-    if obj == None:
+    if obj is None:
         return "Not a JSON", 400
 
     if "name" not in obj:
@@ -59,7 +59,7 @@ def states_put(state_id):
         abort(404)
 
     obj = request.get_json(silent=True)
-    if obj == None:
+    if obj is None:
         return "Not a JSON", 400
 
     for key, value in obj.items():
