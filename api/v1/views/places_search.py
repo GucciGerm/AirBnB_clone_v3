@@ -15,39 +15,41 @@ def places_search():
     criteria = request.get_json(silent=True)
     if criteria is None:
         return (jsonify([x.to_dict() for x in storage.all("Place").values()]))
-    states = storage.all("State")
-    try:
-        states = [x for x in criteria["states"]]
-    except KeyError:
-        states = []
     cities = storage.all("City")
     try:
         cities = [x for x in criteria["cities"]]
     except KeyError:
         cities = []
+    try:
+        for state in storage.all("State").values():
+            if state.id in criteria["states"]:
+                statecities = state.cities
+                statecities = [city.id for city in statecities]
+                cities = cities + statecities
+    except KeyError:
+        pass
     amenities = storage.all("Amenity")
     try:
         amenities = [x for x in criteria["amenities"]]
     except KeyError:
         amenities = []
     places = list(storage.all("Place").values())
-    if len(states) == 0 and len(cities) == 0 and len(amenities) == 0:
+    if len(cities) == 0 and len(amenities) == 0:
         return (jsonify([x.to_dict() for x in places]))
 
+    print(cities)
     placematch = []
     for place in places:
         if len(cities) != 0 and place.city_id not in cities:
             continue
-        if len(states) != 0 and\
-           storage.get("City", place.city_id).state_id not in states:
-            continue
         noamenity = 0
         if len(amenities) != 0:
             placeamenities = place.amenities
+            placeamenities = [amenity.id for amenity in placeamenities]
             if len(placeamenities) == 0:
                 noamenity = 1
-            for amenity in placeamenities:
-                if amenity.id not in amenities:
+            for amenity in amenities:
+                if amenity not in placeamenities:
                     noamenity = 1
                     break
         if noamenity == 1:
