@@ -39,37 +39,33 @@ def states_delete(state_id):
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
 def states_post():
     """Add a state to storage with given dictionary"""
-    try:
-        obj = request.get_json()
-
-        if "name" not in obj:
-            return "Missing name", 400
-
-        obj = State(**obj)
-        obj.save()
-        return jsonify(obj.to_dict()), 201
-
-    except BadRequest:
+    if not request.is_json():
         return "Not a JSON", 400
+    obj = request.get_json()
+
+    if "name" not in obj:
+        return "Missing name", 400
+
+    obj = State(**obj)
+    obj.save()
+    return jsonify(obj.to_dict()), 201
 
 
 @app_views.route("/states/<state_id>", methods=["PUT"], strict_slashes=False)
 def states_put(state_id):
     """Update a state in storage"""
-    try:
-        put_state = storage.get("State", state_id)
-        if put_state is None:
-            abort(404)
+    put_state = storage.get("State", state_id)
+    if put_state is None:
+        abort(404)
 
-        obj = request.get_json()
-
-        for key, value in obj.items():
-            if key == "id" or key == "created_at" or key == "updated_at":
-                continue
-            else:
-                setattr(put_state, key, value)
-        put_state.save()
-        return jsonify(put_state.to_dict()), 200
-
-    except BadRequest:
+    if not request.is_json():
         return "Not a JSON", 400
+    obj = request.get_json()
+
+    for key, value in obj.items():
+        if key == "id" or key == "created_at" or key == "updated_at":
+            continue
+        else:
+            setattr(put_state, key, value)
+    put_state.save()
+    return jsonify(put_state.to_dict()), 200
