@@ -36,5 +36,5 @@ class User(BaseModel, Base):
 
     @password.setter
     def password(self, password=None):
-        if password != None:
+        if password is not None:
             self.__password = md5(password.encode()).hexdigest()
