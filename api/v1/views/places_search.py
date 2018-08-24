@@ -15,7 +15,8 @@ def places_search():
     try:
         criteria = request.get_json()
     except:
-        return "Not a JSON", 400
+        return (jsonify([x.to_dict() for x
+                         in storage.all("Place").values()])), 400
     criteria = request.get_json(silent=True)
     if criteria is None:
         return (jsonify([x.to_dict() for x in storage.all("Place").values()]))
