@@ -12,7 +12,7 @@ from werkzeug.exceptions import BadRequest
 @app_views.route("/places_search", methods=["POST"], strict_slashes=False)
 def places_search():
     """Return all palces matching search criteria"""
-    criteria = request.get_json()
+    criteria = request.get_json(silent=True)
     if criteria is None:
         return (jsonify([x.to_dict() for x in storage.all("Place").values()]))
     states = storage.all("State")
@@ -43,12 +43,25 @@ def places_search():
             continue
         noamenity = 0
         if len(amenities) != 0:
-            for amenity in place.amenities:
-                if amenity not in amenities:
+            placeamenities = place.amenities
+            if len(placeamenities) == 0:
+                noamenity = 1
+            for amenity in placeamenities:
+                if amenity.id not in amenities:
                     noamenity = 1
                     break
         if noamenity == 1:
             continue
 
+        print(place)
+        
         placematch.append(place)
-    return (jsonify([x.to_dict() for x in placematch]))
+
+    retdicts = [x.to_dict() for x in placematch]
+    for place in retdicts:
+        amenitylist = place["amenities"]
+        finallist = []
+        for amenity in range(len(amenitylist)):
+            finallist.append(amenitylist[amenity].to_dict())
+        place["amenities"] = finallist
+    return (jsonify(retdicts))
