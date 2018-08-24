@@ -30,10 +30,10 @@ def places_search():
         amenities = [x for x in criteria["amenities"]]
     except KeyError:
         amenities = []
+    places = list(storage.all("Place").values())
     if len(states) == 0 and len(cities) == 0 and len(amenities) == 0:
         return (jsonify([x.to_dict() for x in places]))
 
-    places = list(storage.all("Place").values())
     placematch = []
     for place in places:
         if len(cities) != 0 and place.city_id not in cities:
