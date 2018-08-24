@@ -36,7 +36,6 @@ def places_search():
     places = list(storage.all("Place").values())
     placematch = []
     for place in places:
-        print(places)
         if len(cities) != 0 and place.city_id not in cities:
             continue
         if len(states) != 0 and\
