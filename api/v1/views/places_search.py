@@ -34,20 +34,17 @@ def places_search():
         return (jsonify([x.to_dict() for x in places]))
 
     places = list(storage.all("Place").values())
+    placematch = []
     for place in places:
-        print("places loop")
+        print(places)
         if len(cities) != 0 and place.city_id not in cities:
-            print("places loop cities")
-            places.remove(place)
             continue
         if len(states) != 0 and\
            storage.get("City", place.city_id).state_id not in states:
-            places.remove(place)
             continue
         if len(amenities) != 0:
             for amenity in place.amenities:
                 if amenty not in amenities:
-                    place.remove(place)
                     continue
-
-    return (jsonify([x.to_dict() for x in places]))
+        placematch.append(place)
+    return (jsonify([x.to_dict() for x in placematch]))
