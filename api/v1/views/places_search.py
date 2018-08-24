@@ -13,7 +13,7 @@ from werkzeug.exceptions import BadRequest
 def places_search():
     """Return all palces matching search criteria"""
     try:
-        criteria = request.get_json(silent=True)
+        criteria = request.get_json()
     except:
         return "Not a JSON", 400
     criteria = request.get_json(silent=True)
