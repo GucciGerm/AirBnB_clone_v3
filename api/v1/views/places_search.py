@@ -12,6 +12,10 @@ from werkzeug.exceptions import BadRequest
 @app_views.route("/places_search", methods=["POST"], strict_slashes=False)
 def places_search():
     """Return all palces matching search criteria"""
+    try:
+        criteria = request.get_json(silent=True)
+    except:
+        return "Not a JSON", 400
     criteria = request.get_json(silent=True)
     if criteria is None:
         return (jsonify([x.to_dict() for x in storage.all("Place").values()]))
