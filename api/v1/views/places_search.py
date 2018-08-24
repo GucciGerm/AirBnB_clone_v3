@@ -43,7 +43,7 @@ def places_search():
             continue
         if len(amenities) != 0:
             for amenity in place.amenities:
-                if amenty not in amenities:
+                if amenity not in amenities:
                     continue
         placematch.append(place)
     return (jsonify([x.to_dict() for x in placematch]))
