@@ -41,9 +41,14 @@ def places_search():
         if len(states) != 0 and\
            storage.get("City", place.city_id).state_id not in states:
             continue
+        noamenity = 0
         if len(amenities) != 0:
             for amenity in place.amenities:
                 if amenity not in amenities:
-                    continue
+                    noamenity = 1
+                    break
+        if noamenity == 1:
+            continue
+
         placematch.append(place)
     return (jsonify([x.to_dict() for x in placematch]))
