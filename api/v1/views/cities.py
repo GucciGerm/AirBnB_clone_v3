@@ -50,40 +50,36 @@ def cities_delete(city_id):
                  methods=["POST"], strict_slashes=False)
 def cities_post(state_id):
     """Add a city to storage with given dictionary"""
-    try:
-        obj = request.get_json()
-
-        if storage.get("State", state_id) is None:
-            abort(404)
-        if "name" not in obj:
-            return "Missing name", 400
-
-        obj["state_id"] = state_id
-        obj = City(**obj)
-        obj.save()
-        return jsonify(obj.to_dict()), 201
-
-    except BadRequest:
+    obj = request.get_json(silent=True)
+    if obj is None:
         return "Not a JSON", 400
+
+    if storage.get("State", state_id) is None:
+        abort(404)
+    if "name" not in obj:
+        return "Missing name", 400
+
+    obj["state_id"] = state_id
+    obj = City(**obj)
+    obj.save()
+    return jsonify(obj.to_dict()), 201
 
 
 @app_views.route("/cities/<city_id>", methods=["PUT"], strict_slashes=False)
 def cities_put(city_id):
     """Update a city in storage"""
-    try:
-        put_city = storage.get("City", city_id)
-        if put_city is None:
-            abort(404)
+    put_city = storage.get("City", city_id)
+    if put_city is None:
+        abort(404)
 
-        obj = request.get_json()
-
-        for key, value in obj.items():
-            if key == "id" or key == "created_at" or key == "updated_at":
-                continue
-            else:
-                setattr(put_city, key, value)
-        put_city.save()
-        return (jsonify(put_city.to_dict())), 200
-
-    except BadRequest:
+    obj = request.get_json(silent=True)
+    if obj is None:
         return "Not a JSON", 400
+
+    for key, value in obj.items():
+        if key == "id" or key == "created_at" or key == "updated_at":
+            continue
+        else:
+            setattr(put_city, key, value)
+    put_city.save()
+    return (jsonify(put_city.to_dict())), 200

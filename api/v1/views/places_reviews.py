@@ -50,45 +50,41 @@ def reviews_delete(review_id):
                  methods=["POST"], strict_slashes=False)
 def reviews_post(place_id):
     """Add a review to storage with given dictionary"""
-    try:
-        obj = request.get_json()
-
-        if storage.get("Place", place_id) is None:
-            abort(404)
-        if "user_id" not in obj:
-            return "Missing user_id", 400
-        if storage.get("User", obj["user_id"]) is None:
-            abort(404)
-        if "text" not in obj:
-            return "Missing text", 400
-
-        obj["place_id"] = place_id
-        obj = Review(**obj)
-        obj.save()
-        return jsonify(obj.to_dict()), 201
-
-    except BadRequest:
+    obj = request.get_json(silent=True)
+    if obj is None:
         return "Not a JSON", 400
+
+    if storage.get("Place", place_id) is None:
+        abort(404)
+    if "user_id" not in obj:
+        return "Missing user_id", 400
+    if storage.get("User", obj["user_id"]) is None:
+        abort(404)
+    if "text" not in obj:
+        return "Missing text", 400
+
+    obj["place_id"] = place_id
+    obj = Review(**obj)
+    obj.save()
+    return jsonify(obj.to_dict()), 201
 
 
 @app_views.route("/reviews/<review_id>", methods=["PUT"], strict_slashes=False)
 def reviews_put(review_id):
     """Update a review in storage"""
-    try:
-        put_review = storage.get("Review", review_id)
-        if put_review is None:
-            abort(404)
+    put_review = storage.get("Review", review_id)
+    if put_review is None:
+        abort(404)
 
-        obj = request.get_json()
-
-        for key, value in obj.items():
-            if key in ["id", "created_at", "updated_at",
-                       "place_id", "user_id"]:
-                continue
-            else:
-                setattr(put_review, key, value)
-        put_review.save()
-        return (jsonify(put_review.to_dict())), 200
-
-    except BadRequest:
+    obj = request.get_json(silent=True)
+    if obj is None:
         return "Not a JSON", 400
+
+    for key, value in obj.items():
+        if key in ["id", "created_at", "updated_at",
+                   "place_id", "user_id"]:
+            continue
+        else:
+            setattr(put_review, key, value)
+    put_review.save()
+    return (jsonify(put_review.to_dict())), 200
