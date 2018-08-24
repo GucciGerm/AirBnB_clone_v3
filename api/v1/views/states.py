@@ -43,7 +43,7 @@ def states_post():
         obj = request.get_json()
 
         if "name" not in obj:
-            return jsonify({"error": "Missing name"}), 400
+            return "Missing name", 400
 
         obj = State(**obj)
         obj.save()
