@@ -17,7 +17,7 @@ class User(BaseModel, Base):
     __tablename__ = "users"
     if getenv("HBNB_TYPE_STORAGE", "fs") == "db":
         email = Column(String(128), nullable=False)
-        password = Column(String(128), nullable=False)
+        __password = Column("password", String(128), nullable=False)
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
         places = relationship("Place", backref="user",
@@ -26,6 +26,15 @@ class User(BaseModel, Base):
                                cascade="all, delete, delete-orphan")
     else:
         email = ""
-        password = ""
+        __password = ""
         first_name = ""
         last_name = ""
+
+    @property
+    def password(self):
+        return self.__password
+
+    @password.setter
+    def password(self, password=None):
+        if password != None:
+            self.__password = md5(password.encode()).hexdigest()

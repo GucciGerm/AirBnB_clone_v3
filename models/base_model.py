@@ -42,8 +42,6 @@ class BaseModel:
             else:
                 self.updated_at = datetime.now()
             for key, val in kwargs.items():
-                if key == "password":
-                    val = md5(val.encode()).hexdigest()
                 if "__class__" not in key:
                     setattr(self, key, val)
             if not self.id:
@@ -83,7 +81,7 @@ class BaseModel:
             del cp_dct["_sa_instance_state"]
         if hasattr(self, "password") and \
            _getframe(1).f_code.co_name != "save":
-            del cp_dct["password"]
+            del cp_dct["_User__password"]
         return (cp_dct)
 
     def delete(self):
