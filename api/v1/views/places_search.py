@@ -53,15 +53,16 @@ def places_search():
         if noamenity == 1:
             continue
 
-        print(place)
-        
         placematch.append(place)
 
     retdicts = [x.to_dict() for x in placematch]
     for place in retdicts:
-        amenitylist = place["amenities"]
-        finallist = []
-        for amenity in range(len(amenitylist)):
-            finallist.append(amenitylist[amenity].to_dict())
-        place["amenities"] = finallist
+        try:
+            amenitylist = place["amenities"]
+            finallist = []
+            for amenity in range(len(amenitylist)):
+                finallist.append(amenitylist[amenity].to_dict())
+            place["amenities"] = finallist
+        except KeyError:
+            pass
     return (jsonify(retdicts))
