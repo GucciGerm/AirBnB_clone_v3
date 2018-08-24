@@ -39,9 +39,9 @@ def states_delete(state_id):
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
 def states_post():
     """Add a state to storage with given dictionary"""
-    if not request.is_json():
+    obj = request.get_json(silent=True)
+    if obj == None:
         return "Not a JSON", 400
-    obj = request.get_json()
 
     if "name" not in obj:
         return "Missing name", 400
@@ -58,9 +58,9 @@ def states_put(state_id):
     if put_state is None:
         abort(404)
 
-    if not request.is_json():
+    obj = request.get_json(silent=True)
+    if obj == None:
         return "Not a JSON", 400
-    obj = request.get_json()
 
     for key, value in obj.items():
         if key == "id" or key == "created_at" or key == "updated_at":
