@@ -105,7 +105,7 @@ class testFileStorage(unittest.TestCase):
         try:
             self.storage.reload()
             self.assertTrue(True)
-        except:
+        except Exception:
             self.assertTrue(False)
 
     def test_delete(self):
@@ -128,3 +128,26 @@ class testFileStorage(unittest.TestCase):
             Test State model in Filestorage
         '''
         self.assertTrue(isinstance(storage, FileStorage))
+
+    def test_count(self):
+        '''
+        Test count method in db_storage
+        '''
+        self.assertEqual(self.storage.count(), len(self.storage.all()))
+
+    def test_count_state(self):
+        '''
+        Test count method in db_storage using states
+        '''
+        self.assertEqual(self.storage.count("State"),
+                         len(self.storage.all("State")))
+
+    def test_get(self):
+        '''
+        Test get method in db_storage
+        '''
+        new_state = State(name="NewYork")
+        self.storage.new(new_state)
+        self.storage.save()
+        self.assertEqual(new_state, self.storage.get("State",
+                                                     new_state.id))
